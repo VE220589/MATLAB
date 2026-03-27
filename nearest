@@ -1,0 +1,43 @@
+%Metodo para simular nearest.
+
+x=[2 5 8 15 23];
+
+y =[0.1 2.5 2.8 -7.5 12];
+
+xo = input('Ingrese el valor/punto a interpolar: ');
+
+n = length(x);
+
+
+
+for i= 1:n
+
+    distancia(i)= abs(xo -x(i));
+
+end
+
+
+
+distanciamin = distancia(1);
+
+indice = 1;
+
+
+
+for i=2:n
+
+    if distancia(i)< distanciamin
+
+    distanciamin = distancia(i);
+
+    indice = i;
+
+    end
+
+end
+
+
+
+valory = y(indice);
+
+fprintf('Valor interpolado es: %5f\n', valory); 
