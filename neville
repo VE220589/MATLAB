@@ -1,0 +1,44 @@
+syms x
+disp('Método de Interpolación de Neville')
+
+% --- ENTRADA DE DATOS ---
+X = input('Ingrese los valores de x (ej. [1 2 3]): ');
+aprox = input('Ingrese el valor a aproximar: ');
+
+tipo = input('Ingrese 1 si tiene TABLA, o 2 si tiene FUNCION: ');
+
+if tipo == 1
+    Y = input('Ingrese los valores de y (ej. [4 5 6]): ');
+else
+    f = input('Ingrese la funcion (ej. sin(x)): ');
+    Y = double(subs(f, X));
+end
+
+% --- EL CORAZÓN DEL ALGORITMO (Neville) ---
+n = length(X);
+Q = zeros(n);
+Q(:,1) = Y;
+
+for j = 2:n
+    for i = j:n
+        termino1 = (aprox - X(i-j+1)) * Q(i,j-1);
+        termino2 = (aprox - X(i)) * Q(i-1,j-1);
+        denominador = X(i) - X(i-j+1);
+        
+        Q(i,j) = (termino1 - termino2) / denominador;
+    end
+end
+% -----------------------------------------
+
+% --- SALIDA DE DATOS ---
+disp('--- MATRIZ DE VALORES Q ---');
+disp(Q)
+fprintf('El valor aproximado es: %.15f \n\n', Q(n,n));
+
+% Si se ingresó una función, calculamos el error
+if tipo == 2
+    valorexacto = double(subs(f, aprox));
+    error_abs = abs(Q(n,n) - valorexacto);
+    fprintf('El valor exacto es: %.15f \n', valorexacto);
+    fprintf('El error absoluto es: %e \n', error_abs);
+end
