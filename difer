@@ -1,0 +1,69 @@
+% --- Método de Diferencias Divididas de Newton (Unificado) ---
+syms x
+format long
+disp('--- Método de Diferencias Divididas de Newton ---')
+
+% Menú para elegir el tipo de entrada
+disp('¿Qué tipo de datos posee?');
+disp('1. Una función matemática conocida');
+disp('2. Una tabla de datos discretos (x, y)');
+opcion = input('Ingrese 1 o 2: ');
+
+% Ingreso de datos de X
+X = input('Ingrese el vector de valores de x (ej. [0.01 10 20 30]): ');
+
+% Lógica condicional según la opción elegida
+if opcion == 1
+    f = input('Ingrese la función (ej. sin(x) o exp(x)): ');
+    Y = double(subs(f, X)); % Calcula Y evaluando la función
+else
+    Y = input('Ingrese el vector de valores de y (ej. [206.14 106.38 57.79 32.89]): ');
+end
+
+aprox = input('Ingrese el valor de x a aproximar: ');
+n = length(X);
+
+% Inicializar matriz de diferencias divididas
+F = zeros(n, n);
+
+% Llenar la primera columna con los valores de Y
+for i = 1:n
+    F(i, 1) = Y(i);
+end
+
+% Calcular el resto de las diferencias divididas
+for j = 2:n
+    for i = j:n
+        F(i, j) = (F(i, j-1) - F(i-1, j-1)) / (X(i) - X(i-j+1));
+    end
+end
+
+% Mostrar la matriz de diferencias divididas
+disp('Matriz de diferencias divididas construida:');
+vpa(F, 6)
+
+% Construcción del polinomio de Newton
+pol = F(1, 1);
+for j = 2:n
+    producto = 1;
+    for k = 1:j-1
+        producto = producto * (x - X(k));
+    end
+    % Los coeficientes son la diagonal de la matriz F
+    pol = pol + F(j, j) * producto;
+end
+
+% Resultados finales
+fprintf('Polinomio de Newton resultante: \n');
+pretty(vpa(pol, 5));
+
+valoraprox = subs(pol, aprox);
+fprintf('El valor aproximado para x = %f es: %.15f \n\n', aprox, double(valoraprox));
+
+% Si el usuario ingresó una función, podemos calcular el error exacto
+if opcion == 1
+    valorexacto = double(subs(f, aprox));
+    error_abs = abs(valoraprox - valorexacto);
+    fprintf('El valor exacto de la función es: %.15f \n', valorexacto);
+    fprintf('Error absoluto: %e \n\n', error_abs);
+end
