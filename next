@@ -1,0 +1,27 @@
+% Método para simular 'next' (el siguiente punto hacia la derecha)
+x = [2 5 8 15 23];
+y = [0.1 2.5 2.8 -7.5 12];
+xo = input('Ingrese el valor/punto a interpolar: ');
+n = length(x);
+
+% 1. Calculamos la diferencia de cada punto respecto a xo
+for i = 1:n
+    diferencia(i) = x(i) - xo; 
+end
+
+% 2. Buscamos la menor diferencia, pero SOLO entre los valores positivos
+% Inicializamos la distancia mínima con infinito ('inf') para que el 
+% primer valor válido la reemplace fácilmente.
+distanciamin = inf; 
+indice = 1;
+
+for i = 1:n
+    % La condición clave: x(i) debe ser mayor o igual a xo (diferencia >= 0)
+    if diferencia(i) >= 0 && diferencia(i) < distanciamin
+        distanciamin = diferencia(i);
+        indice = i;
+    end
+end
+
+valory = y(indice);
+fprintf('Valor interpolado (next) es: %5f\n', valory);
