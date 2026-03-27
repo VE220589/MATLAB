@@ -1,0 +1,24 @@
+% Método para simular 'previous' (el punto anterior hacia la izquierda)
+x = [2 5 8 15 23];
+y = [0.1 2.5 2.8 -7.5 12];
+xo = input('Ingrese el valor/punto a interpolar: ');
+n = length(x);
+
+% 1. Calculamos la diferencia invertida
+for i = 1:n
+    diferencia(i) = xo - x(i); 
+end
+
+distanciamin = inf; 
+indice = 1;
+
+for i = 1:n
+    % La condición clave: x(i) debe ser menor o igual a xo (diferencia >= 0)
+    if diferencia(i) >= 0 && diferencia(i) < distanciamin
+        distanciamin = diferencia(i);
+        indice = i;
+    end
+end
+
+valory = y(indice);
+fprintf('Valor interpolado (previous) es: %5f\n', valory);
