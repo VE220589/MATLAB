@@ -1,0 +1,26 @@
+syms x
+X = [-1.87 -1.65 -1.27 -0.09 -0.05 0.4 0.58 0.85 1.05];
+f = tan((pi*x)/(750));
+Y =double(subs(f, X));
+aprox = -2.15;
+valor= interp1(X,Y,aprox,'linear', 'extrap');
+fprintf('El valor aproximado de F(-2.15) es: %.15f \n\n', double(valor));
+
+valor=interp1(X,Y,valoraproximado, 'metodo', 'extrap')
+
+linear, nearest, next, previous, pchip, cubic, spline
+
+% 1. Ingresamos los vectores con los datos exactos de la tabla
+x = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2];
+y = [1.1787359, 1.3104793, 1.3899781, 1.4140628, 1.3817733, 1.2943968];
+
+% 2. Definimos el valor que queremos aproximar
+x_aprox = 0.97;
+
+% 3. Usamos el comando integrado de MATLAB para interpolación
+% Sintaxis: interp1(vector_X, vector_Y, valor_a_evaluar, 'metodo')
+y_aprox = interp1(x, y, x_aprox, 'cubic');
+
+% 4. Mostramos el resultado con todos los decimales
+format long
+fprintf('El valor aproximado de F(0.97) es: %.15f\n', y_aprox);
